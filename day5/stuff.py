@@ -34,9 +34,6 @@ def carve(span_start, span_end, map_start, map_end):
     else:
         return []     , [(a,b)]
 
-print(ranges)
-print(mappings)
-
 for mapping in mappings:
     new_ranges = []
     for seed_span in ranges:
