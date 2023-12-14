@@ -22,7 +22,7 @@ func main() {
 	lines := strings.Split(strings.ReplaceAll(string(file), "\r\n", "\n"), "\n")
 
 	var patterns []string 
-	var numbers [][]uint8
+	var numbers [][]uint8 //Exploiting the fact that uint8s are basically just ascii characters, so that I can store it on a map.
 
 	for _, line := range lines {
 		parts := strings.Split(line, " ")
@@ -68,8 +68,7 @@ func count(pattern string, numbers []uint8) int {
 		sum += int(n)
 	}
 	if len(pattern) < sum {
-		res := 0
-		return setCache(pattern, numbers, res)
+		return setCache(pattern, numbers, 0)
 	}
 
 	if pattern[0] == '?' {
@@ -79,8 +78,7 @@ func count(pattern string, numbers []uint8) int {
 
 	if pattern[0] == '#' {
 		if len(numbers) == 0 {
-			res := 0
-			return setCache(pattern, numbers, res)
+			return setCache(pattern, numbers, 0)
 		}
 
 		n := numbers[0]
@@ -89,8 +87,7 @@ func count(pattern string, numbers []uint8) int {
 			indexDot = len(pattern)
 		}
 		if indexDot < int(n) {
-			res := 0
-			return setCache(pattern, numbers, res)
+			return setCache(pattern, numbers, 0)
 		}
 		remaining := pattern[n:]
 		if len(remaining) == 0 {
@@ -98,9 +95,7 @@ func count(pattern string, numbers []uint8) int {
 			return setCache(pattern, numbers, res)
 		}
 		if remaining[0] == '#' {
-			// fail
-			res := 0
-			return setCache(pattern, numbers, res)
+			return setCache(pattern, numbers, 0)
 		}
 		res := count(remaining[1:], numbers[1:])
 		return setCache(pattern, numbers, res)
